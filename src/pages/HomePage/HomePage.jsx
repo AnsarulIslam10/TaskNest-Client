@@ -1,9 +1,10 @@
 import React from 'react';
+import AddTask from './AddTask/AddTask';
 
 const HomePage = () => {
     return (
         <div>
-            hsdf
+            <AddTask></AddTask>
         </div>
     );
 };
