@@ -3,7 +3,7 @@ import React from "react";
 const AddTask = () => {
   return (
     <div>
-      <div className="card bg-base-100 w-full shrink-0 shadow-2xl">
+      <div className="card bg-base-100 w-full shrink-0 border-sky-100 border">
         <form className="card-body">
           <div className="form-control">
             <label className="label">
