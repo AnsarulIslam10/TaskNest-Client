@@ -59,9 +59,6 @@ const AllTask = () => {
     }
   };
 
-  // edit
-  const handleEdit = () => {};
-
   // delete
   const handleDelete = async (task) => {
     await axiosPublic.delete(`/task/${task._id}`);
@@ -80,7 +77,6 @@ const AllTask = () => {
           tasks={todoTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
-          onEdit={handleEdit}
           onDelete={handleDelete}
         />
         <Category
@@ -88,7 +84,6 @@ const AllTask = () => {
           tasks={inProgressTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
-          onEdit={handleEdit}
           onDelete={handleDelete}
         />
         <Category
@@ -96,7 +91,6 @@ const AllTask = () => {
           tasks={doneTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
-          onEdit={handleEdit}
           onDelete={handleDelete}
         />
       </div>
