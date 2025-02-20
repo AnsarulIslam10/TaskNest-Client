@@ -1,9 +1,10 @@
 import React from "react";
-import useAxiosPublic from "../../../hooks/useAxiosPulic";
 import { toast } from "react-toastify";
+import useAxiosPublic from "../../../hooks/useAxiosPulic";
 
 const AddTask = () => {
   const axiosPublic = useAxiosPublic();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +40,8 @@ const AddTask = () => {
       toast.error(error.message);
     }
   };
+
+ 
   return (
     <div>
       <div className="card bg-base-100 w-full shrink-0 border-sky-100 border">
