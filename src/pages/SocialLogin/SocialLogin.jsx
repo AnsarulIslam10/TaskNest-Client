@@ -3,22 +3,27 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
+import useAxiosPublic from "../../hooks/useAxiosPulic";
 
 const SocialLogin = () => {
   const { signInWithGoogle } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
   const location = useLocation();
   const navigate = useNavigate();
   const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then((result) => {
-        toast.success("Login Successfull");
-        navigate(location?.state ? location.state : "/");
+        const userInfo = {
+          userId: result.user?.uid,
+          email: result.user?.email,
+          name: result.user?.displayName,
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          navigate("/");
+          toast.success("Signed In Successfully");
+        });
       })
-      .catch((err) => {
-        if (err && err.code) {
-          errorHandler(err);
-        }
-      });
+      .catch((err) => console.log(err));
   };
   return (
     <div className="bg-gradient-to-tr from-cyan-300 to-sky-500 h-[100vh]">
