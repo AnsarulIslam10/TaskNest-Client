@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPulic";
 import Category from "../../../components/Category/Category";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
@@ -61,9 +62,23 @@ const AllTask = () => {
 
   // delete
   const handleDelete = async (task) => {
-    await axiosPublic.delete(`/task/${task._id}`);
-    setTasks((prev) => prev.filter((t) => t.id !== task._id));
-    toast.success("deleted sccessfully")
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axiosPublic.delete(`/task/${task._id}`);
+        if (res.data.deletedCount > 0) {
+          toast.success("Task Deleted");
+          setTasks((prev) => prev.filter((t) => t.id !== task._id));
+        }
+      }
+    });
   };
 
   const todoTasks = getTasksByCategory("todo");
