@@ -2,7 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import DraggableTask from "../DraggableTask/DraggableTask";
 
-const Category = ({ category, tasks, moveTask, onDropTask }) => {
+const Category = ({ category, tasks, moveTask, onDropTask, onEdit, onDelete }) => {
   const [{ isOver }, drop] = useDrop({
     accept: "TASK",
     drop: (draggedItem, monitor) => {
@@ -32,6 +32,8 @@ const Category = ({ category, tasks, moveTask, onDropTask }) => {
           category={category}
           moveTask={moveTask}
           onDropTask={onDropTask}
+          onEdit={onEdit}
+          onDelete={onDelete}
         ></DraggableTask>
       ))}
     </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPulic";
 import Category from "../../../components/Category/Category";
+import { toast } from "react-toastify";
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
@@ -58,6 +59,16 @@ const AllTask = () => {
     }
   };
 
+  // edit
+  const handleEdit = () => {};
+
+  // delete
+  const handleDelete = async (task) => {
+    await axiosPublic.delete(`/task/${task._id}`);
+    setTasks((prev) => prev.filter((t) => t.id !== task._id));
+    toast.success("deleted sccessfully")
+  };
+
   const todoTasks = getTasksByCategory("todo");
   const inProgressTasks = getTasksByCategory("inProgress");
   const doneTasks = getTasksByCategory("done");
@@ -69,18 +80,24 @@ const AllTask = () => {
           tasks={todoTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
         <Category
           category="inProgress"
           tasks={inProgressTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
         <Category
           category="done"
           tasks={doneTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
       </div>
     </div>

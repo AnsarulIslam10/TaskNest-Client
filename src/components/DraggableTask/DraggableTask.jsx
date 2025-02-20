@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-const DraggableTask = ({ task, index, moveTask, category, onDropTask }) => {
+const DraggableTask = ({ task, index, moveTask, category, onDropTask, onEdit, onDelete }) => {
   const ref = useRef(null);
 
   const [, drop] = useDrop({
@@ -59,8 +59,13 @@ const DraggableTask = ({ task, index, moveTask, category, onDropTask }) => {
         backgroundColor: "#e0f7fa",
         cursor: "move",
       }}
+      className="flex justify-between"
     >
       {task.title}
+      <div className="flex gap-2">
+        <button onClick={()=> onEdit(task)}>edit</button>
+        <button onClick={()=> onDelete(task)}>delete</button>
+      </div>
     </div>
   );
 };
