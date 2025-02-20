@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPulic";
+import Category from "../../../components/Category/Category";
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
@@ -10,53 +11,77 @@ const AllTask = () => {
       setTasks(data);
     };
     fetchAllTask();
-  }, []);
+  }, [axiosPublic]);
 
-  const todoTasks = tasks.filter((task) => task.category === "todo");
-  const inProgressTasks = tasks.filter(
-    (task) => task.category === "inProgress"
-  );
-  const doneTasks = tasks.filter((task) => task.category === "done");
-  console.log(todoTasks);
+  const getTasksByCategory = (category) =>
+    tasks.filter((task) => task.category === category);
+  const moveTask = (dragIndex, hoverIndex, category) => {
+    const categoryTask = getTasksByCategory(category);
+    const draggedTask = categoryTask[dragIndex];
+
+    const newCategoryTask = [...categoryTask];
+    newCategoryTask.splice(dragIndex, 1);
+    newCategoryTask.splice(hoverIndex, 0, draggedTask);
+    const newTasks = tasks.filter((task) => task.category !== category);
+    setTasks([...newTasks, ...newCategoryTask]);
+  };
+
+  const handleDropTask = async (
+    draggedTask,
+    destinationCategory,
+    dropIndex
+  ) => {
+    if (draggedTask.category !== destinationCategory) {
+      const updatedDraggedTask = {
+        ...draggedTask,
+        category: destinationCategory,
+      };
+      let newTasks = tasks.filter((task) => task._id !== draggedTask._id);
+
+      const destTask = tasks.filter(
+        (task) => task.category === destinationCategory
+      );
+      destTask.splice(dropIndex, 0, updatedDraggedTask);
+
+      const otherTasks = newTasks.filter(
+        (task) => task.category !== destinationCategory
+      );
+      setTasks([...otherTasks, ...destTask]);
+
+      try {
+        await axiosPublic.put(`/tasks/${draggedTask._id}`, {
+          category: destinationCategory,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const todoTasks = getTasksByCategory("todo");
+  const inProgressTasks = getTasksByCategory("inProgress");
+  const doneTasks = getTasksByCategory("done");
   return (
     <div className="mt-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold">TODO</h1>
-          <div>
-            {todoTasks.length > 0
-              ? todoTasks.map((task) => (
-                  <div key={task._id} className="p-4 bg-sky-300">
-                    <h2>{task.title}</h2>
-                  </div>
-                ))
-              : ""}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="text-4xl font-bold">In Progress</h1>
-          <div className="bg-sky-200 h-10">
-          {inProgressTasks.length > 0
-              ? inProgressTasks.map((task) => (
-                  <div key={task._id}>
-                    <h2>{task.title}</h2>
-                  </div>
-                ))
-              : ""}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="text-4xl font-bold">DONE</h1>
-          <div className="bg-sky-200 h-10">
-          {doneTasks.length > 0
-              ? doneTasks.map((task) => (
-                  <div key={task._id} >
-                    <h2>{task.title}</h2>
-                  </div>
-                ))
-              : ""}
-          </div>
-        </div>
+        <Category
+          category="todo"
+          tasks={todoTasks}
+          moveTask={moveTask}
+          onDropTask={handleDropTask}
+        />
+        <Category
+          category="inProgress"
+          tasks={inProgressTasks}
+          moveTask={moveTask}
+          onDropTask={handleDropTask}
+        />
+        <Category
+          category="done"
+          tasks={doneTasks}
+          moveTask={moveTask}
+          onDropTask={handleDropTask}
+        />
       </div>
     </div>
   );
