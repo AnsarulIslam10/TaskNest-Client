@@ -50,7 +50,7 @@ const AllTask = () => {
       setTasks([...otherTasks, ...destTask]);
 
       try {
-        await axiosPublic.put(`/tasks/${draggedTask._id}`, {
+        await axiosPublic.put(`/task/${draggedTask._id}`, {
           category: destinationCategory,
         });
       } catch (error) {

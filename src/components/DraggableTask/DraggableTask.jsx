@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import EditTaskModal from "../Modal/EditTaskModal";
 
 const DraggableTask = ({ task, index, moveTask, category, onDropTask, onEdit, onDelete }) => {
   const ref = useRef(null);
@@ -63,7 +64,7 @@ const DraggableTask = ({ task, index, moveTask, category, onDropTask, onEdit, on
     >
       {task.title}
       <div className="flex gap-2">
-        <button onClick={()=> onEdit(task)}>edit</button>
+        <EditTaskModal task={task} onEdit={onEdit}></EditTaskModal>
         <button onClick={()=> onDelete(task)}>delete</button>
       </div>
     </div>
