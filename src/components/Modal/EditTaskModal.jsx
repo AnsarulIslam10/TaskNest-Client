@@ -2,6 +2,7 @@ import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import { useState } from "react";
 
 import useAxiosPublic from "../../hooks/useAxiosPulic";
+import { FaEdit } from "react-icons/fa";
 
 export default function EditTaskModal({ task, onEdit }) {
   let [isOpen, setIsOpen] = useState(false);
@@ -37,8 +38,8 @@ export default function EditTaskModal({ task, onEdit }) {
 
   return (
     <>
-      <Button onClick={open} className="btn btn-primary">
-        Edit
+      <Button onClick={open}>
+        <FaEdit className="text-2xl text-sky-500"/>
       </Button>
 
       <Dialog

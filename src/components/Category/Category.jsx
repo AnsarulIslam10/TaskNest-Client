@@ -2,7 +2,14 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import DraggableTask from "../DraggableTask/DraggableTask";
 
-const Category = ({ category, tasks, moveTask, onDropTask, onEdit, onDelete }) => {
+const Category = ({
+  category,
+  tasks,
+  moveTask,
+  onDropTask,
+  onEdit,
+  onDelete,
+}) => {
   const [{ isOver }, drop] = useDrop({
     accept: "TASK",
     drop: (draggedItem, monitor) => {
@@ -23,7 +30,9 @@ const Category = ({ category, tasks, moveTask, onDropTask, onEdit, onDelete }) =
         backgroundColor: isOver ? "#ffecb3" : "#f0f0f0",
       }}
     >
-      <h2>{category.toUpperCase()}</h2>
+      <h2 className="text-2xl font-bold text-center py-2 bg-cyan-400">
+        {category.toUpperCase()}
+      </h2>
       {tasks.map((task, index) => (
         <DraggableTask
           key={task._id}

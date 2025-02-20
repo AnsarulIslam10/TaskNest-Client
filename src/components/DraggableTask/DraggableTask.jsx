@@ -1,8 +1,17 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import EditTaskModal from "../Modal/EditTaskModal";
+import { FaTrash } from "react-icons/fa6";
 
-const DraggableTask = ({ task, index, moveTask, category, onDropTask, onEdit, onDelete }) => {
+const DraggableTask = ({
+  task,
+  index,
+  moveTask,
+  category,
+  onDropTask,
+  onEdit,
+  onDelete,
+}) => {
   const ref = useRef(null);
 
   const [, drop] = useDrop({
@@ -55,17 +64,15 @@ const DraggableTask = ({ task, index, moveTask, category, onDropTask, onEdit, on
       ref={ref}
       style={{
         opacity: isDragging ? 0.5 : 1,
-        padding: "8px",
-        marginBottom: "4px",
-        backgroundColor: "#e0f7fa",
-        cursor: "move",
       }}
-      className="flex justify-between"
+      className="flex justify-between p-2 mb-1 bg-sky-200 cursor-move hover:scale-105 transition-all duration-300"
     >
       {task.title}
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <EditTaskModal task={task} onEdit={onEdit}></EditTaskModal>
-        <button onClick={()=> onDelete(task)}>delete</button>
+        <button onClick={() => onDelete(task)}>
+          <FaTrash className="text-xl text-red-500" />
+        </button>
       </div>
     </div>
   );
