@@ -36,7 +36,7 @@ const AddTask = () => {
     };
 
     try {
-      await axiosPublic.post("/add-task", newTask);
+      await axiosPublic.post("/tasks", newTask);
       toast.success("Task Added");
     } catch (error) {
       toast.error(error.message);

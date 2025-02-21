@@ -4,27 +4,21 @@ import Category from "../../../components/Category/Category";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../providers/AuthProvider";
-import { io } from "socket.io-client";
-
-const socket = io("https://task-nest-server-delta.vercel.app");
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
   const [tasks, setTasks] = useState([]);
   const { user } = useContext(AuthContext);
 
-  const fetchAllTask = async () => {
-    if (user && user.uid) {
-      const { data } = await axiosPublic.get(`/tasks?userId=${user.uid}`);
-      setTasks(data);
-    }
-  };
+
   useEffect(() => {
+    const fetchAllTask = async () => {
+      if (user && user.uid) {
+        const { data } = await axiosPublic.get(`/tasks?userId=${user.uid}`);
+        setTasks(data);
+      }
+    };
     fetchAllTask();
-    socket.on("taskUpdated", () => {
-      fetchAllTask();
-    });
-    return () => socket.off("taskUpdated");
   }, [axiosPublic, user]);
 
   const getTasksByCategory = (category) =>
@@ -84,10 +78,10 @@ const AllTask = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axiosPublic.delete(`/task/${task._id}`);
+        const res = await axiosPublic.delete(`/tasks/${task._id}`);
         if (res.data.deletedCount > 0) {
+          setTasks((prev) => prev.filter((t) => t.id !== task._id));
           toast.success("Task Deleted");
-          // setTasks((prev) => prev.filter((t) => t.id !== task._id));
         }
       }
     });
