@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import EditTaskModal from "../Modal/EditTaskModal";
 import { FaTrash } from "react-icons/fa6";
+import { FaRegClock, FaStickyNote } from "react-icons/fa";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 const DraggableTask = ({
   task,
@@ -59,15 +61,29 @@ const DraggableTask = ({
 
   drag(drop(ref));
 
+  const fromattedTimestamp = new Date(task.timestamp).toLocaleString();
   return (
     <div
       ref={ref}
       style={{
         opacity: isDragging ? 0.5 : 1,
       }}
-      className="flex justify-between p-2 mb-1 bg-sky-200 cursor-move hover:scale-105 transition-all duration-300"
+      className="flex justify-between p-2 mb-1 bg-[#16e9aa] cursor-move hover:scale-105 transition-all duration-300 mt-1"
     >
-      {task.title}
+      <div className="flex-1">
+        <p className="text-sm text-gray-700 flex items-center gap-1">
+          {" "}
+          <FaRegClock className="text-gray-400" />
+          {fromattedTimestamp}
+        </p>
+        <h2 className="flex items-center gap-1 text-xl font-semibold text-gray-800">
+          <FaStickyNote className="text-blue-500" /> {task.title}
+        </h2>
+        <p className="flex items-center gap-1 text-sm text-gray-600">
+          <IoDocumentTextOutline className="text-green-500" />
+          {task.description}
+        </p>
+      </div>
       <div className="flex gap-3">
         <EditTaskModal task={task} onEdit={onEdit}></EditTaskModal>
         <button onClick={() => onDelete(task)}>

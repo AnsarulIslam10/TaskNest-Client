@@ -107,8 +107,8 @@ export default function EditTaskModal({ task, onEdit }) {
                     onChange={handleChange}
                     className="select select-bordered w-full max-w-xs"
                   >
-                    <option value={"todo"}>To-Do</option>
-                    <option value={"inProgress"}>In Progress</option>
+                    <option value={"to-do"}>To-Do</option>
+                    <option value={"in-progress"}>In Progress</option>
                     <option value={"done"}>Done</option>
                   </select>
                 </div>

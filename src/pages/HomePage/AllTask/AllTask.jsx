@@ -88,22 +88,22 @@ const AllTask = () => {
     });
   };
 
-  const todoTasks = getTasksByCategory("todo");
-  const inProgressTasks = getTasksByCategory("inProgress");
+  const todoTasks = getTasksByCategory("to-do");
+  const inprogressTasks = getTasksByCategory("in-progress");
   const doneTasks = getTasksByCategory("done");
   return (
     <div className="mt-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <Category
-          category="todo"
+          category="to-do"
           tasks={todoTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
           onDelete={handleDelete}
         />
         <Category
-          category="inProgress"
-          tasks={inProgressTasks}
+          category="in-progress"
+          tasks={inprogressTasks}
           moveTask={moveTask}
           onDropTask={handleDropTask}
           onDelete={handleDelete}
