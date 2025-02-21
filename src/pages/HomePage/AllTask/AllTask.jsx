@@ -4,22 +4,21 @@ import Category from "../../../components/Category/Category";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../providers/AuthProvider";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
-  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState([]);
   const { user } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
-
-  useEffect(() => {
-    const fetchAllTask = async () => {
-      if (user && user.uid) {
-        const { data } = await axiosPublic.get(`/tasks?userId=${user.uid}`);
-        setTasks(data);
-      }
-    };
-    fetchAllTask();
-  }, [axiosPublic, user]);
+  const { data: tasks = [], refetch } = useQuery({
+    queryKey: ["tasks", user?.uid],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get(`/tasks?userId=${user.uid}`);
+      return data;
+    },
+  });
 
   const getTasksByCategory = (category) =>
     tasks.filter((task) => task.category === category);
@@ -30,8 +29,10 @@ const AllTask = () => {
     const newCategoryTask = [...categoryTask];
     newCategoryTask.splice(dragIndex, 1);
     newCategoryTask.splice(hoverIndex, 0, draggedTask);
-    const newTasks = tasks.filter((task) => task.category !== category);
-    setTasks([...newTasks, ...newCategoryTask]);
+    const otherTasks = tasks.filter((task) => task.category !== category);
+    const newTasks = [...otherTasks, ...newCategoryTask];
+
+    queryClient.setQueriesData(["tasks", user?.uid], newTasks);
   };
 
   const handleDropTask = async (
@@ -40,21 +41,20 @@ const AllTask = () => {
     dropIndex
   ) => {
     if (draggedTask.category !== destinationCategory) {
-      const updatedDraggedTask = {
-        ...draggedTask,
-        category: destinationCategory,
-      };
-      let newTasks = tasks.filter((task) => task._id !== draggedTask._id);
-
-      const destTask = tasks.filter(
-        (task) => task.category === destinationCategory
-      );
-      destTask.splice(dropIndex, 0, updatedDraggedTask);
-
-      const otherTasks = newTasks.filter(
-        (task) => task.category !== destinationCategory
-      );
-      setTasks([...otherTasks, ...destTask]);
+      queryClient.setQueryData(["tasks", user?.uid], (oldTasks = []) => {
+        const updatedTask = { ...draggedTask, category: destinationCategory };
+        const filteredTasks = oldTasks.filter(
+          (task) => task._id !== draggedTask._id
+        );
+        const destTasks = filteredTasks.filter(
+          (task) => task.category === destinationCategory
+        );
+        destTasks.splice(dropIndex, 0, updatedTask);
+        const otherTasks = filteredTasks.filter(
+          (task) => task.category !== destinationCategory
+        );
+        return [...otherTasks, ...destTasks];
+      });
 
       try {
         await axiosPublic.put(`/task/${draggedTask._id}`, {
@@ -80,7 +80,8 @@ const AllTask = () => {
       if (result.isConfirmed) {
         const res = await axiosPublic.delete(`/tasks/${task._id}`);
         if (res.data.deletedCount > 0) {
-          setTasks((prev) => prev.filter((t) => t.id !== task._id));
+          // setTasks((prev) => prev.filter((t) => t.id !== task._id));
+          refetch();
           toast.success("Task Deleted");
         }
       }

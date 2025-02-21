@@ -1,11 +1,16 @@
 import { Button, Dialog, DialogPanel } from "@headlessui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import useAxiosPublic from "../../hooks/useAxiosPulic";
 import { FaEdit } from "react-icons/fa";
+import { AuthContext } from "../../providers/AuthProvider";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export default function EditTaskModal({ task, onEdit }) {
   let [isOpen, setIsOpen] = useState(false);
+  const { user } = useContext(AuthContext);
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     title: task.title,
     description: task.description,
@@ -33,13 +38,15 @@ export default function EditTaskModal({ task, onEdit }) {
     if (onEdit) {
       onEdit({ ...task, ...formData });
     }
+    queryClient.invalidateQueries(["tasks", user?.uid]);
+    toast.success("Task Updated");
     close();
   };
 
   return (
     <>
       <Button onClick={open}>
-        <FaEdit className="text-2xl text-sky-500"/>
+        <FaEdit className="text-2xl text-sky-500" />
       </Button>
 
       <Dialog

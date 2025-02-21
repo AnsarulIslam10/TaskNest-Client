@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import useAxiosPublic from "../../../hooks/useAxiosPulic";
 import { AuthContext } from "../../../providers/AuthProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AddTask = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +39,9 @@ const AddTask = () => {
 
     try {
       await axiosPublic.post("/tasks", newTask);
+      queryClient.invalidateQueries(["tasks", user?.uid]);
       toast.success("Task Added");
+      form.reset();
     } catch (error) {
       toast.error(error.message);
     }
