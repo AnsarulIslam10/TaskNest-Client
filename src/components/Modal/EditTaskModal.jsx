@@ -6,6 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import { AuthContext } from "../../providers/AuthProvider";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { FaX } from "react-icons/fa6";
 
 export default function EditTaskModal({ task, onEdit }) {
   let [isOpen, setIsOpen] = useState(false);
@@ -60,32 +61,52 @@ export default function EditTaskModal({ task, onEdit }) {
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full max-w-2xl rounded-xl p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 bg-sky-600"
+              className="w-full max-w-2xl rounded-xl sm:p-6 p-2 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border"
             >
               <div className="flex justify-end text-gray-600">
                 <Button className="text-2xl" onClick={close}>
-                  X
+                  <FaX />
                 </Button>
               </div>
               {/* Content */}
               <form onSubmit={handleSubmit} className="card-body">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Title</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    placeholder="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    className="input input-bordered"
-                    required
-                  />
+                <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-center">
+                  Edit Your Task
+                </h1>
+                <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-6">
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="text-xl font-semibold">Title</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="title"
+                      value={formData.title}
+                      onChange={handleChange}
+                      className="input input-bordered"
+                      required
+                    />
+                  </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="text-xl font-semibold">Category</span>
+                    </label>
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      className="select select-bordered w-full max-w-xs"
+                    >
+                      <option value={"to-do"}>To-Do</option>
+                      <option value={"in-progress"}>In Progress</option>
+                      <option value={"done"}>Done</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Description</span>
+                    <span className="text-xl font-semibold">Description</span>
                   </label>
                   <input
                     type="text"
@@ -93,27 +114,13 @@ export default function EditTaskModal({ task, onEdit }) {
                     placeholder="description"
                     value={formData.description}
                     onChange={handleChange}
-                    className="input input-bordered"
+                    className="textarea textarea-bordered h-20"
                     required
                   />
                 </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Category</span>
-                  </label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="select select-bordered w-full max-w-xs"
-                  >
-                    <option value={"to-do"}>To-Do</option>
-                    <option value={"in-progress"}>In Progress</option>
-                    <option value={"done"}>Done</option>
-                  </select>
-                </div>
+
                 <div className="form-control mt-6">
-                  <button className="btn btn-primary">Add Task</button>
+                  <button className="btn bg-[#16e9aa] hover:bg-[#14d69c] border-none">Edit Task</button>
                 </div>
               </form>
             </DialogPanel>

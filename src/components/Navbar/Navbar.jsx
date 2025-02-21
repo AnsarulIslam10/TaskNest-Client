@@ -1,18 +1,13 @@
 import React, { useContext } from "react";
 import { BiExit } from "react-icons/bi";
-import { FaPlus } from "react-icons/fa";
 import { AuthContext } from "../../providers/AuthProvider";
 
 const Navbar = () => {
     const {signOutUser} = useContext(AuthContext)
-    const links = <>
-    <li>
-        <button>Add Task <FaPlus/></button>
-    </li>
-    </>
+    
   return (
-    <nav>
-      <div className="navbar bg-[#16e9aa]">
+    <nav className="bg-[#16e9aa]">
+      <div className="navbar max-w-[1440px] mx-auto px-2">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -35,14 +30,14 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
-             {links}
+            
             </ul>
           </div>
           <a className="text-3xl font-bold text-cyan-500">Task<span className="text-[#037754]">Nest</span></a>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {links}
+         
           </ul>
         </div>
         <div className="navbar-end">

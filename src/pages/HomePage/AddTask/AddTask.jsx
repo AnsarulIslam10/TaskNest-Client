@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
+import { Button, Dialog, DialogPanel } from "@headlessui/react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosPublic from "../../../hooks/useAxiosPulic";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { useQueryClient } from "@tanstack/react-query";
+import { FaPlus } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 
 const AddTask = () => {
+  let [isOpen, setIsOpen] = useState(false);
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
@@ -42,58 +46,97 @@ const AddTask = () => {
       queryClient.invalidateQueries(["tasks", user?.uid]);
       toast.success("Task Added");
       form.reset();
+      close();
     } catch (error) {
       toast.error(error.message);
     }
   };
 
+  function open() {
+    setIsOpen(true);
+  }
+
+  function close() {
+    setIsOpen(false);
+  }
+
   return (
-    <div>
-      <div className="card bg-base-100 w-full shrink-0 border-sky-100 border">
-        <form onSubmit={handleSubmit} className="card-body">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Title</span>
-            </label>
-            <input
-              type="text"
-              name="title"
-              placeholder="title"
-              className="input input-bordered"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Description</span>
-            </label>
-            <input
-              type="text"
-              name="description"
-              placeholder="description"
-              className="input input-bordered"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Category</span>
-            </label>
-            <select
-              name="category"
-              className="select select-bordered w-full max-w-xs"
+    <>
+      <Button onClick={open} className={"btn bg-[#16e9aa] hover:bg-[#14d69c] rounded-none drop-shadow-xl border-none"}>
+        Add Task <FaPlus />
+      </Button>
+      <Dialog
+        open={isOpen}
+        as="div"
+        className="relative z-10 focus:outline-none"
+        onClose={close}
+        __demoMode
+      >
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <DialogPanel
+              transition
+              className="w-full max-w-2xl rounded-xl sm:p-6 p-2 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border"
             >
-              <option value={"to-do"}>To-Do</option>
-              <option value={"in-progress"}>In Progress</option>
-              <option value={"done"}>Done</option>
-            </select>
+              <div className="flex justify-end text-gray-600">
+                <Button className="text-2xl" onClick={close}>
+                  <FaX />
+                </Button>
+              </div>
+              <form onSubmit={handleSubmit} className="card-body">
+                <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-center">
+                  Add Your Task
+                </h1>
+                <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-6">
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="text-xl font-semibold">Title</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="title"
+                      className="input input-bordered"
+                      required
+                    />
+                  </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="text-xl font-semibold">Category</span>
+                    </label>
+                    <select
+                      name="category"
+                      className="select select-bordered w-full max-w-xs"
+                    >
+                      <option value={"to-do"}>To-Do</option>
+                      <option value={"in-progress"}>In Progress</option>
+                      <option value={"done"}>Done</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="form-control">
+                  <label className="label">
+                    <span className="text-xl font-semibold">Description</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="description"
+                    placeholder="description"
+                    className="textarea textarea-bordered h-20"
+                    required
+                  />
+                </div>
+
+                <div className="form-control mt-6">
+                  <button className="btn bg-[#16e9aa] hover:bg-[#14d69c] border-none">Add Task</button>
+                </div>
+              </form>
+            </DialogPanel>
           </div>
-          <div className="form-control mt-6">
-            <button className="btn btn-primary">Add Task</button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      </Dialog>
+    </>
   );
 };
 
