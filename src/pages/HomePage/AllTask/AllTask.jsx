@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPulic";
 import Category from "../../../components/Category/Category";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../providers/AuthProvider";
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
   const [tasks, setTasks] = useState([]);
+  const { user } = useContext(AuthContext);
   useEffect(() => {
     const fetchAllTask = async () => {
-      const { data } = await axiosPublic.get("/tasks");
-      setTasks(data);
+      if (user && user.uid) {
+        const { data } = await axiosPublic.get(`/tasks?userId=${user.uid}`);
+        setTasks(data);
+      }
     };
     fetchAllTask();
   }, [axiosPublic]);

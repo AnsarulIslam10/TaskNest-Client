@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import useAxiosPublic from "../../../hooks/useAxiosPulic";
+import { AuthContext } from "../../../providers/AuthProvider";
 
 const AddTask = () => {
   const axiosPublic = useAxiosPublic();
-
+  const { user } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +32,7 @@ const AddTask = () => {
       description,
       category,
       timestamp: new Date().toISOString(),
+      userId: user?.uid,
     };
 
     try {
@@ -41,7 +43,6 @@ const AddTask = () => {
     }
   };
 
- 
   return (
     <div>
       <div className="card bg-base-100 w-full shrink-0 border-sky-100 border">
