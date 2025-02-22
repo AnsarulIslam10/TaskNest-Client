@@ -125,7 +125,7 @@ const AddTask = () => {
                       type="text"
                       name="title"
                       placeholder="Title"
-                      className="input input-borderedtext-black"
+                      className="input input-bordered text-black"
                       required
                       onChange={handleTitleChange}
                     />
