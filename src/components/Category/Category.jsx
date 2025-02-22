@@ -24,11 +24,9 @@ const Category = ({
   return (
     <div
       ref={drop}
-      style={{
-        minHeight: "200px",
-        padding: "8px",
-        backgroundColor: isOver ? "#ffecb3" : "#f0f0f0",
-      }}
+      className={`drop-shadow-md p-2 min-h-[200px] ${
+        isOver ? "bg-[#ffecb3]" : "bg-[#f0f0f0]"
+      }`}
     >
       <h2 className="text-2xl font-bold text-center py-2 bg-[#2ad9df]">
         {category.toUpperCase()}

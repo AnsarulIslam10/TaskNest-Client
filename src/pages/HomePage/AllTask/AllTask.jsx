@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import useAxiosPublic from "../../../hooks/useAxiosPulic";
-import Category from "../../../components/Category/Category";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import Category from "../../../components/Category/Category";
+import useAxiosPublic from "../../../hooks/useAxiosPulic";
 import { AuthContext } from "../../../providers/AuthProvider";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
-  // const [tasks, setTasks] = useState([]);
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
@@ -80,7 +79,6 @@ const AllTask = () => {
       if (result.isConfirmed) {
         const res = await axiosPublic.delete(`/tasks/${task._id}`);
         if (res.data.deletedCount > 0) {
-          // setTasks((prev) => prev.filter((t) => t.id !== task._id));
           refetch();
           toast.success("Task Deleted");
         }
@@ -93,7 +91,7 @@ const AllTask = () => {
   const doneTasks = getTasksByCategory("done");
   return (
     <div className="mt-10">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Category
           category="to-do"
           tasks={todoTasks}

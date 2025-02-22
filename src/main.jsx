@@ -11,6 +11,7 @@ import AuthProvider from "./providers/AuthProvider";
 import SocialLogin from "./pages/SocialLogin/SocialLogin";
 import PrivateRoute from "./routes/PrivateRoute";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         <MainLayout></MainLayout>
       </PrivateRoute>
     ),
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",

@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import EditTaskModal from "../Modal/EditTaskModal";
-import { FaTrash } from "react-icons/fa6";
 import { FaRegClock, FaStickyNote } from "react-icons/fa";
-import { IoDocumentText, IoDocumentTextOutline } from "react-icons/io5";
+import { FaTrash } from "react-icons/fa6";
+import { IoDocumentText } from "react-icons/io5";
+import EditTaskModal from "../Modal/EditTaskModal";
 
 const DraggableTask = ({
   task,
@@ -61,20 +61,20 @@ const DraggableTask = ({
 
   drag(drop(ref));
 
-  const fromattedTimestamp = new Date(task.timestamp).toLocaleString();
+  const formattedTimestamp = new Date(task.timestamp).toLocaleString();
   return (
     <div
       ref={ref}
       style={{
         opacity: isDragging ? 0.5 : 1,
       }}
-      className="flex justify-between p-2 mb-1 bg-[#16e9aa] cursor-move hover:scale-105 transition-all duration-300 mt-1"
+      className="flex justify-between p-2 mb-1 bg-[#16e9aa] cursor-move hover:scale-105 transition-all duration-300 mt-2"
     >
       <div className="flex-1">
         <p className="text-sm text-gray-700 flex items-center gap-1">
           {" "}
           <FaRegClock className="text-gray-400" />
-          {fromattedTimestamp}
+          {formattedTimestamp}
         </p>
         <h2 className="flex items-center gap-1 text-xl font-semibold text-gray-800">
           <FaStickyNote className="text-[#1a93da] text-base" /> {task.title}
