@@ -9,9 +9,14 @@ import { FaX } from "react-icons/fa6";
 
 const AddTask = () => {
   let [isOpen, setIsOpen] = useState(false);
+  const [titleLength, setTitleLength] = useState(0);
+  const [desctiptionLength, setDesctiptionLength] = useState(0);
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
+
+  const title_limit = 50;
+  const description_limit = 200;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,9 +65,33 @@ const AddTask = () => {
     setIsOpen(false);
   }
 
+  const handleTitleChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= title_limit) {
+      setTitleLength(value.length);
+    } else {
+      e.target.value = value.slice(0, title_limit);
+      toast.warning("Title character limit exceeded");
+    }
+  };
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= description_limit) {
+      setDesctiptionLength(value.length);
+    } else {
+      e.target.value = value.slice(0, description_limit);
+      toast.warning("Description character limit exceeded");
+    }
+  };
+
   return (
     <>
-      <Button onClick={open} className={"btn bg-[#16e9aa] hover:bg-[#14d69c] rounded-none drop-shadow-xl border-none"}>
+      <Button
+        onClick={open}
+        className={
+          "btn bg-[#16e9aa] hover:bg-[#14d69c] rounded-none drop-shadow-xl border-none"
+        }
+      >
         Add Task <FaPlus />
       </Button>
       <Dialog
@@ -98,7 +127,11 @@ const AddTask = () => {
                       placeholder="title"
                       className="input input-bordered"
                       required
+                      onChange={handleTitleChange}
                     />
+                    <p className="text-right text-sm text-gray-500">
+                      {titleLength} / {title_limit}
+                    </p>
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -124,12 +157,17 @@ const AddTask = () => {
                     name="description"
                     placeholder="description"
                     className="textarea textarea-bordered h-20"
-                    required
+                    onChange={handleDescriptionChange}
                   />
                 </div>
+                <p className="text-right text-sm text-gray-500">
+                  {desctiptionLength} / {description_limit}
+                </p>
 
                 <div className="form-control mt-6">
-                  <button className="btn bg-[#16e9aa] hover:bg-[#14d69c] border-none">Add Task</button>
+                  <button className="btn bg-[#16e9aa] hover:bg-[#14d69c] border-none">
+                    Add Task
+                  </button>
                 </div>
               </form>
             </DialogPanel>

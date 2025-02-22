@@ -12,13 +12,15 @@ export default function EditTaskModal({ task, onEdit }) {
   let [isOpen, setIsOpen] = useState(false);
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
+  const axiosPublic = useAxiosPublic();
   const [formData, setFormData] = useState({
     title: task.title,
     description: task.description,
     category: task.category,
   });
 
-  const axiosPublic = useAxiosPublic();
+  const title_limit = 50;
+  const description_limit = 200;
 
   function open() {
     setIsOpen(true);
@@ -30,7 +32,17 @@ export default function EditTaskModal({ task, onEdit }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let newValue = value;
+
+    if (name === "title" && value.length > title_limit) {
+      toast.warning("Title character limit exceeded");
+      newValue = value.slice(0, title_limit);
+    }
+    if (name === "description" && value.length > description_limit) {
+      toast.warning("Description character limit exceeded");
+      newValue = value.slice(0, description_limit);
+    }
+    setFormData((prev) => ({ ...prev, [name]: newValue }));
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,6 +99,9 @@ export default function EditTaskModal({ task, onEdit }) {
                       className="input input-bordered"
                       required
                     />
+                    <p className="text-right text-sm text-gray-500">
+                      {formData.title.length} / {title_limit}
+                    </p>
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -115,12 +130,16 @@ export default function EditTaskModal({ task, onEdit }) {
                     value={formData.description}
                     onChange={handleChange}
                     className="textarea textarea-bordered h-20"
-                    required
                   />
+                  <p className="text-right text-sm text-gray-500">
+                    {formData.description.length} / {description_limit}
+                  </p>
                 </div>
 
                 <div className="form-control mt-6">
-                  <button className="btn bg-[#16e9aa] hover:bg-[#14d69c] border-none">Edit Task</button>
+                  <button className="btn bg-[#16e9aa] hover:bg-[#14d69c] border-none">
+                    Edit Task
+                  </button>
                 </div>
               </form>
             </DialogPanel>
