@@ -76,12 +76,13 @@ const DraggableTask = ({
           {formattedTimestamp}
         </p>
         <h2 className="flex items-start gap-1 text-xl font-semibold text-gray-800">
-          <FaStickyNote className="text-[#1a93da] text-base mt-[6px]" /> {task.title}
+          <FaStickyNote className="text-[#3eaff0] text-base mt-[6px]" />{" "}
+          {task.title}
         </h2>
-        <p className="flex items-center gap-1 text-sm text-gray-600 ml-[18px]">
-          
+        <p className="flex items-center gap-1 text-sm text-gray-700 ml-[18px]">
           {task.description}
         </p>
+        <p className="badge bg-[#3eaff0] text-white border-none mt-3">{task.category.toUpperCase()}</p>
       </div>
       <div className="flex gap-3">
         <EditTaskModal task={task} onEdit={onEdit}></EditTaskModal>
