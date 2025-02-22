@@ -15,7 +15,7 @@ export default function EditTaskModal({ task, onEdit }) {
   const axiosPublic = useAxiosPublic();
   const [formData, setFormData] = useState({
     title: task.title,
-    description: task.description,
+    description: task.description || "",
     category: task.category,
   });
 
@@ -75,13 +75,13 @@ export default function EditTaskModal({ task, onEdit }) {
               transition
               className="w-full max-w-2xl rounded-xl sm:p-6 p-2 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border"
             >
-              <div className="flex justify-end text-gray-600">
+              <div className="flex justify-end text-gray-600 dark:text-gray-300">
                 <Button className="text-2xl" onClick={close}>
                   <FaX />
                 </Button>
               </div>
               {/* Content */}
-              <form onSubmit={handleSubmit} className="card-body">
+              <form onSubmit={handleSubmit} className="card-body dark:text-white">
                 <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-center">
                   Edit Your Task
                 </h1>
@@ -96,10 +96,10 @@ export default function EditTaskModal({ task, onEdit }) {
                       placeholder="title"
                       value={formData.title}
                       onChange={handleChange}
-                      className="input input-bordered"
+                      className="input input-bordered text-black"
                       required
                     />
-                    <p className="text-right text-sm text-gray-500">
+                    <p className="text-right text-sm text-gray-500 dark:text-gray-200">
                       {formData.title.length} / {title_limit}
                     </p>
                   </div>
@@ -111,7 +111,7 @@ export default function EditTaskModal({ task, onEdit }) {
                       name="category"
                       value={formData.category}
                       onChange={handleChange}
-                      className="select select-bordered w-full max-w-xs"
+                      className="select select-bordered w-full max-w-xs text-black"
                     >
                       <option value={"to-do"}>To-Do</option>
                       <option value={"in-progress"}>In Progress</option>
@@ -129,9 +129,9 @@ export default function EditTaskModal({ task, onEdit }) {
                     placeholder="description"
                     value={formData.description}
                     onChange={handleChange}
-                    className="textarea textarea-bordered h-20"
+                    className="textarea textarea-bordered h-20 text-black"
                   />
-                  <p className="text-right text-sm text-gray-500">
+                  <p className="text-right text-sm text-gray-500 dark:text-gray-200">
                     {formData.description.length} / {description_limit}
                   </p>
                 </div>

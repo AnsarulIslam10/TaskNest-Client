@@ -22,7 +22,7 @@ const AddTask = () => {
     e.preventDefault();
     const form = e.target;
     const title = form.title.value;
-    const description = form.description.value;
+    const description = form.description.value || "";
     const category = form.category.value;
 
     if (!title) {
@@ -107,12 +107,12 @@ const AddTask = () => {
               transition
               className="w-full max-w-2xl rounded-xl sm:p-6 p-2 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border"
             >
-              <div className="flex justify-end text-gray-600">
+              <div className="flex justify-end text-gray-600 dark:text-gray-300">
                 <Button className="text-2xl" onClick={close}>
                   <FaX />
                 </Button>
               </div>
-              <form onSubmit={handleSubmit} className="card-body">
+              <form onSubmit={handleSubmit} className="card-body dark:text-white">
                 <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-center">
                   Add Your Task
                 </h1>
@@ -124,12 +124,12 @@ const AddTask = () => {
                     <input
                       type="text"
                       name="title"
-                      placeholder="title"
-                      className="input input-bordered"
+                      placeholder="Title"
+                      className="input input-borderedtext-black"
                       required
                       onChange={handleTitleChange}
                     />
-                    <p className="text-right text-sm text-gray-500">
+                    <p className="text-right text-sm text-gray-500 dark:text-gray-200">
                       {titleLength} / {title_limit}
                     </p>
                   </div>
@@ -139,7 +139,7 @@ const AddTask = () => {
                     </label>
                     <select
                       name="category"
-                      className="select select-bordered w-full max-w-xs"
+                      className="select select-bordered w-full max-w-xs text-black"
                     >
                       <option value={"to-do"}>To-Do</option>
                       <option value={"in-progress"}>In Progress</option>
@@ -155,12 +155,12 @@ const AddTask = () => {
                   <input
                     type="text"
                     name="description"
-                    placeholder="description"
-                    className="textarea textarea-bordered h-20"
+                    placeholder="Write task description"
+                    className="textarea textarea-bordered h-20 text-black"
                     onChange={handleDescriptionChange}
                   />
                 </div>
-                <p className="text-right text-sm text-gray-500">
+                <p className="text-right text-sm text-gray-500 dark:text-gray-200">
                   {desctiptionLength} / {description_limit}
                 </p>
 
