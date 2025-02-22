@@ -47,7 +47,7 @@ export default function EditTaskModal({ task, onEdit }) {
   return (
     <>
       <Button onClick={open}>
-        <FaEdit className="text-2xl text-sky-500" />
+        <FaEdit className="text-2xl text-[#1a93da]" />
       </Button>
 
       <Dialog

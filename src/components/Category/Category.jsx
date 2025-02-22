@@ -30,7 +30,7 @@ const Category = ({
         backgroundColor: isOver ? "#ffecb3" : "#f0f0f0",
       }}
     >
-      <h2 className="text-2xl font-bold text-center py-2 bg-cyan-400">
+      <h2 className="text-2xl font-bold text-center py-2 bg-[#2ad9df]">
         {category.toUpperCase()}
       </h2>
       {tasks.map((task, index) => (

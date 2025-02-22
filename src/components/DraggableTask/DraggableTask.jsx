@@ -3,7 +3,7 @@ import { useDrag, useDrop } from "react-dnd";
 import EditTaskModal from "../Modal/EditTaskModal";
 import { FaTrash } from "react-icons/fa6";
 import { FaRegClock, FaStickyNote } from "react-icons/fa";
-import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoDocumentText, IoDocumentTextOutline } from "react-icons/io5";
 
 const DraggableTask = ({
   task,
@@ -77,10 +77,10 @@ const DraggableTask = ({
           {fromattedTimestamp}
         </p>
         <h2 className="flex items-center gap-1 text-xl font-semibold text-gray-800">
-          <FaStickyNote className="text-blue-500" /> {task.title}
+          <FaStickyNote className="text-[#1a93da] text-base" /> {task.title}
         </h2>
         <p className="flex items-center gap-1 text-sm text-gray-600">
-          <IoDocumentTextOutline className="text-green-500" />
+          <IoDocumentText className="text-[#1a93da] text-base" />
           {task.description}
         </p>
       </div>
